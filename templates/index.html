@@ -1,12 +1,17 @@
-<!DOCTYPE>
+{% extends 'base.html' %}
+{%block head%} 
+{{super()}}
+<style type="text/css">
+	h1 {color:red}
 
-<HTML>
-<HEAD> <TITLE> THE FRIST PAGE </TITLE> </HEAD>
-<BODY>
-<h1> how are you  </h1>
+</style>
 
-<P> Welcome the user  </P>
+{%endblock%}
 
-</BODY>
+{% block title%} this is my index  {% endblock %}
 
-</HTML
+{%block body%}
+
+<h1> hi is my apliction it's good bye bye </h1>
+
+{% endblock %}
