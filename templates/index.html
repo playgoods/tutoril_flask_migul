@@ -15,6 +15,8 @@
 	<div class="container">
 		<div class="page-header">
 			<h1> This Is My Index !</h1>
+			<p> the Local date and time is {{moment(current_time).format('LLL')}} .</p>
+			<p> that was  {{moment(current_time).fromNow(refresh=True)}} .</p>
 		</div>
 	</div>
 
