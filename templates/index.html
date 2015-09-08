@@ -1,23 +1,21 @@
 {% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
 {%block head%} 
 {{super()}}
 <style type="text/css">
 	h1 {color:red}
-
 </style>
-
 {%endblock%}
 
 {% block title%} this is my index  {% endblock %}
-
 {% block content %}
 
 	<div class="container">
 		<div class="page-header">
-			<h1> This Is My Index !</h1>
-			<p> the Local date and time is {{moment(current_time).format('LLL')}} .</p>
-			<p> that was  {{moment(current_time).fromNow(refresh=True)}} .</p>
+			<h1> Hello, {%if name%} {{name|title}} {%else%} Stranger {%endif%}! </h1>
 		</div>
+		{{wtf.quick_form(form)}}
 	</div>
 
 {% endblock %}
