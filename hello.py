@@ -1,6 +1,7 @@
 from flask import Flask,render_template,session,redirect,url_for,flash
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.script import Manager,Shell
+from flask.ext.migrate import Migrate,MigrateCommand
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.moment import Moment
 from datetime import datetime
@@ -14,17 +15,22 @@ app = Flask(__name__)
 app.config['SECRET_KEY']="GOODtime54545sososolion"
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///'+os.path.join(basedir,'data.sqlite')
+
 db=SQLAlchemy(app)
 
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 
-manger = Manager(app)
+manager = Manager(app)
+migrate = Migrate(app,db)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 
 def make_shell_context():
 	return dict(app=app,db=db,User=User,Role=Role)
 
-manger.add_command("shell",Shell(make_context = make_shell_context))
+manager.add_command("shell", Shell(make_context=make_shell_context))
+manager.add_command('db', MigrateCommand)
+
 
 class NameForm(Form):
 	name=StringField('What is your name?',validators=[Required()])
@@ -48,17 +54,26 @@ class User(db.Model):
 		return '<User %r>'% self.username
 		
 
+		
+		
+		
 @app.route('/', methods=['GET', 'POST'])
 def index():
     form = NameForm()
     if form.validate_on_submit():
-        old_name = session.get('name')
-        if old_name is not None and old_name != form.name.data:
-            flash('Looks like you have changed your name!')
+        user = User.query.filter_by(username=form.name.data).first()
+        if user is None:
+            user = User(username=form.name.data)
+            db.session.add(user)
+            session['known'] = False
+        else:
+            session['known'] = True
         session['name'] = form.name.data
         return redirect(url_for('index'))
-    return render_template('index.html', form=form, name=session.get('name'))
-	
+    return render_template('index.html', form=form, name=session.get('name'),
+                           known=session.get('known', False))
+						   
+		
 	
 @app.route('/user/<name>')
 def user(name):
@@ -74,4 +89,4 @@ def internal_server_error(e):
 	return render_template('500.html'),500
 	
 if __name__ == "__main__":
-	manger.run()
+	manager.run()
