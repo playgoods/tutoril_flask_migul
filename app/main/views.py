@@ -1,7 +1,8 @@
 from datetime import datetime
-from flask import render_template,session,redirect,url_for
+from flask import render_template,session,redirect,url_for,current_app
 from . import main
 from .forms import NameForm
+from ..email import send_email
 from .. import db
 from ..models import User
 
