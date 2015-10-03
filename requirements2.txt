@@ -31,3 +31,4 @@ Werkzeug
 WTForms
 WTForms-Alchemy
 WTForms-Components
+flask-login
