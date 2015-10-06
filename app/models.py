@@ -39,13 +39,14 @@ class User(UserMixin,db.Model):
 		
 	def verify_password(self,password):
 		return check_password_hash(self.password_hash,password)
-		
-	def generate_confirmation_token(self,expiration=3600):
-		s=Serializer(current_app.config['SECRET_KEY'],expiration)
-		return s.dumps({'confirm':self.id})
-		
-	def comfirm(self,token):
-		s=Serializer(current_app.config['SECRET_KEY'])
+	
+	
+	def generate_confirmation_token(self, expiration=3600):
+		s = Serializer(current_app.config['SECRET_KEY'], expiration)
+		return s.dumps({'confirm': self.id})
+
+	def confirm(self, token):
+		s = Serializer(current_app.config['SECRET_KEY'])
 		try:
 			data = s.loads(token)
 		except:
@@ -55,6 +56,10 @@ class User(UserMixin,db.Model):
 		self.confirmed = True
 		db.session.add(self)
 		return True
+
+	def generate_reset_token(self, expiration=3600):
+		s = Serializer(current_app.config['SECRET_KEY'], expiration)
+		return s.dumps({'reset': self.id})
 
 
 	def __repr__(self): 
