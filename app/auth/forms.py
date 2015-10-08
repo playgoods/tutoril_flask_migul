@@ -10,6 +10,15 @@ class LoginForm(Form):
 	password = PasswordField('Password',validators=[Required()])
 	rememper_me = BooleanField('Keep me logged in')
 	submit = SubmitField('Log In')
+	
+class ChangePasswordForm(Form):
+	
+	old_password = PasswordField('Current Password ',validators=[Required()])
+	password = PasswordField('New Password',validators=[
+		Required(),EqualTo('password2',message='Password must match.')])
+	password2 = PasswordField('Confirm Password',validators=[Required()])
+	
+	submit = SubmitField('Password Change ')
 
 	
 class RegistrationForm(Form):
