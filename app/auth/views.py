@@ -4,7 +4,7 @@ from . import auth
 from ..models import User
 from .. import db
 from ..email import send_email
-from .forms import LoginForm,RegistrationForm,ChangePasswordForm
+from .forms import LoginForm,RegistrationForm,ChangePasswordForm,PasswordResetRequestForm,PasswordResetForm
 
 
 @auth.before_app_request
