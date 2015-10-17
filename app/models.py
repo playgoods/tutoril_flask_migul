@@ -71,7 +71,8 @@ class User(UserMixin,db.Model):
 		self.last_seen = datetime.utcnow()
 		db.session.add(self)
 		
-	
+ 
+				
 	def __init__(self,**kwargs):
 		super(User,self).__init__(**kwargs)
 		if self.role is None:
@@ -79,9 +80,11 @@ class User(UserMixin,db.Model):
 				self.role = Role.query.filter_by(permissions=0xff).first()
 			if self.role is None:
 				self.role = Role.query.filter_by(default=True).first()
+	
 	def can(self,permissions):
 		return self.role is not None and \
 			(self.role.permissions & permissions) == permissions
+
 	def is_administrator(self):
 		return self.can(Permission.ADMINISTER)
 	
