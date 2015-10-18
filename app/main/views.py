@@ -60,7 +60,7 @@ def edit_profile_admin(id):
 	if form.validate_on_submit():
 		user.email = form.email.data
 		user.username = form.username.data
-		user.confirmed = form.comfirmed.data
+		user.confirmed = form.confirmed.data
 		user.role = Role.query.get(form.role.data)
 		user.name = form.name.data
 		user.location = form.location.data
