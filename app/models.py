@@ -68,6 +68,24 @@ class User(UserMixin,db.Model):
 	member_since = db.Column(db.DateTime(),default=datetime.utcnow)
 	last_seen = db.Column(db.DateTime(),default=datetime.utcnow)
 	avatar_hash = db.Column(db.String(32))
+	posts = db.relationship('Post',backref='author',lazy='dynamic')
+	
+	@staticmethod
+	def generate_fake(count=300):
+		from sqlalchemy.exc import IngegrityError
+		from random import seed
+		import forgery_py
+		
+		seed()
+		for i in range (count):
+			u = User(email = forgery_py.internet.email_address(),
+					username = forgery_py.internet.user_name(True),
+					password = forgery_py.lorem_ipsum.word(),
+					confrim = True,
+					name=forgery_py.name.full_name()
+					location=forgery_py.address.city()
+					
+					)
 	
 	def ping(self):
 		self.last_seen = datetime.utcnow()
@@ -171,6 +189,15 @@ class User(UserMixin,db.Model):
 
 	def __repr__(self): 
 		return '<User %r>' % self.username
+		
+class Post(db.Model):
+	__tablename__ = 'posts'
+	id = db.Column(db.Integer,primary_key = True)
+	body = db.Column(db.Text)
+	timestamp = db.Column(db.DateTime,index = True, default = datetime.utcnow)
+	author_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+	
+		
 		
 class AnonymousUser(AnonymousUserMixin):
 	def can(self,permissions):
