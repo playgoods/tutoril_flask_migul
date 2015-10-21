@@ -12,6 +12,7 @@ class Config:
 	MAIL_USE_TLS = True
 	MAIL_USERNAME = "cakephp.php@gmail.com"
 	MAIL_PASSWORD = "zfvluxtohgbhloew"
+	FLASK_POSTS_PER_PAGE = 10
 	
 	@staticmethod
 	def init_app(app):
