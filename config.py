@@ -13,6 +13,7 @@ class Config:
 	MAIL_USERNAME = "cakephp.php@gmail.com"
 	MAIL_PASSWORD = "zfvluxtohgbhloew"
 	FLASK_POSTS_PER_PAGE = 10
+	FLASKY_FOLLOWERS_PER_PAGE = 5
 	
 	@staticmethod
 	def init_app(app):
