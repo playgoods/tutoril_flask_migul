@@ -37,7 +37,7 @@ def index():
 	                       show_followed=show_followed, pagination=pagination)
 
 	
-@main.route('/post/<int:id>')
+@main.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
 	post = Post.query.get_or_404(id)
 	form = CommentForm()
